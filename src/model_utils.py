@@ -142,8 +142,14 @@ def get_inference_artifacts(img_path):
 
     img = Image.open(img_path)
 
+    # resize image to fullsize
+    full_size = retinanet.transform(transform(img).unsqueeze(0))[0].tensors.size()[2:][
+        ::-1
+    ]
+    img = img.resize(full_size)
+
     outputs = predict(
         model=retinanet, image=img, transform=transform, detection_threshold=0.9
     )
 
-    return outputs, retinanet
+    return outputs, retinanet, img
