@@ -17,12 +17,14 @@ def gather_data_artifacts(img_path):
 
     """
 
-    outputs, model = get_inference_artifacts(img_path)
+    outputs, model, image = get_inference_artifacts(img_path)
     feature_map_figure = get_feature_map_plot(model)
 
     data_artifacts = {
         "outputs": outputs,
-        "model": model,
+        "image": image,
+        # "model": model,
+        "viz_artifacts": model.viz_artifacts,
         "feature_map_fig": feature_map_figure,
     }
 
