@@ -10,7 +10,8 @@ sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
 import SessionState
 from welcome import welcome
-from feature_extraction import feature_extraction
+from fpn import feature_extraction
+from rpn import anchor_boxs
 from src.data_utils import gather_data_artifacts, create_pickle, load_pickle
 from src.app_utils import (
     PRESET_IMAGES,
@@ -46,12 +47,12 @@ def main():
             session_state.data_artifacts = gather_data_artifacts(session_state.img_path)
         else:
             session_state = load_pickle(f"data/{session_state.img_option}.pkl")
-            # session_state.data_artifacts = ss_arch.data_artifacts
 
         feature_extraction(session_state)
 
     elif step_option == APP_PAGES[2]:
-        pass
+        session_state = load_pickle(f"data/{session_state.img_option}.pkl")
+        anchor_boxs(session_state)
 
     elif step_option == APP_PAGES[3]:
         pass
