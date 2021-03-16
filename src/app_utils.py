@@ -330,6 +330,7 @@ def plot_pyramid_level_anchors2(
             )
             ax1.add_patch(patch)
 
+    # normalize and resize a feature map for visualization
     fm = features[pyramid_level_idx][:, 66, :, :].detach().numpy()
     fm = np.rollaxis(fm, 0, 3)
     fm_norm = (
