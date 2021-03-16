@@ -261,22 +261,32 @@ def get_anchor_plots(image, anchor_generator, pred_boxes, features):
 
     anchor_plots = {}
     for i in range(5):
-        fig = plot_pyramid_level_anchors2(
+        fig, fig_stats = plot_pyramid_level_anchors2(
             i,
             img=image,
             image_size=anchor_generator.anchor_artifacts["image_size"],
             strides=anchor_generator.anchor_artifacts["strides"],
+            grid_sizes=anchor_generator.anchor_artifacts["grid_sizes"],
             cell_anchors=anchor_generator.cell_anchors.copy(),
             pred_boxes=pred_boxes,
             features=features,
+            anchor_sizes=anchor_generator.sizes,
         )
-        anchor_plots[f"P{i+3}"] = fig
+        anchor_plots[f"P{i+3}"] = {"fig": fig, "fig_stats": fig_stats}
 
     return anchor_plots
 
 
 def plot_pyramid_level_anchors2(
-    pyramid_level_idx, img, image_size, strides, cell_anchors, pred_boxes, features
+    pyramid_level_idx,
+    img,
+    image_size,
+    strides,
+    grid_sizes,
+    cell_anchors,
+    pred_boxes,
+    features,
+    anchor_sizes,
 ):
     """
     This function overlays a full set of anchor boxes (all aspect ratios and sizes) on a given image
@@ -305,6 +315,7 @@ def plot_pyramid_level_anchors2(
     ax1.set_yticks(np.arange(0, image_size[0], strides[pyramid_level_idx][0]))
     ax1.axes.xaxis.set_ticklabels([])
     ax1.axes.yaxis.set_ticklabels([])
+    ax1.title.set_text(f"P{pyramid_level_idx+3} - Anchor Grid with Anchor Box Overlay")
     ax1.imshow(img.resize(image_size[::-1]), aspect="auto", alpha=0.4)
 
     box_centers = [
@@ -342,12 +353,19 @@ def plot_pyramid_level_anchors2(
     ax2.set_yticks(np.arange(0, image_size[0], strides[pyramid_level_idx][0]))
     ax2.axes.xaxis.set_ticklabels([])
     ax2.axes.yaxis.set_ticklabels([])
+    ax2.title.set_text(f"P{pyramid_level_idx+3} - Sample Feature Map")
 
     ax2.imshow(
         fm_img,
         aspect="auto",
     )
-
     plt.tight_layout()
 
-    return fig
+    fig_stats = {
+        "image_size": list(image_size),
+        "stride": [stride.item() for stride in strides[pyramid_level_idx]],
+        "grid_size": list(grid_sizes[pyramid_level_idx]),
+        "anchor_sizes": anchor_sizes[pyramid_level_idx],
+    }
+
+    return fig, fig_stats

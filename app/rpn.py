@@ -59,6 +59,18 @@ def anchor_boxs(session_state):
             options=[f"P{i+3}" for i in range(5)],
         )
 
+        stats = session_state.data_artifacts["anchor_plots"][pyramid_level]["fig_stats"]
+
+        col1, col2 = st.beta_columns(2)
+        with col1:
+            st.info(
+                f'**Image Size:** ({" x ".join([str(stat) for stat in stats["image_size"]])}) px \n\n **Anchor Grid:** ({" x ".join([str(stat) for stat in stats["grid_size"]])}) cells \n\n **Total # Anchors:** {stats["grid_size"][0]*stats["grid_size"][1]*9}'
+            )
+        with col2:
+            st.info(
+                f'**Anchor Sizes:** {stats["anchor_sizes"]} px$^2$ \n\n **Anchor Stride:** ({" x ".join([str(stat) for stat in stats["stride"]])}) px'
+            )
+
         st.image(session_state.img_paths["rpn"][pyramid_level])
 
     return

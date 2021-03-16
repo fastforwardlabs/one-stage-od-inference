@@ -47,19 +47,25 @@ def main():
         # # for saving preset objects only
         # session_state.data_artifacts = gather_data_artifacts(session_state.img_path)
         # session_state.img_paths = save_figure_images(session_state)
-        # create_pickle(session_state, f"data/{session_state.img_option}.pkl")
+        # create_pickle(
+        #     session_state,
+        #     f"data/{session_state.img_option}/{session_state.img_option}.pkl",
+        # )
 
         if not session_state.img_option in PRESET_IMAGES.keys():
             session_state.data_artifacts = gather_data_artifacts(session_state.img_path)
             session_state.img_paths = save_figure_images(session_state)
         else:
-            session_state = load_pickle(f"data/{session_state.img_option}.pkl")
-            print(session_state.img_paths)
+            session_state = load_pickle(
+                f"data/{session_state.img_option}/{session_state.img_option}.pkl"
+            )
 
         feature_extraction(session_state)
 
     elif step_option == APP_PAGES[2]:
-        session_state = load_pickle(f"data/{session_state.img_option}.pkl")
+        session_state = load_pickle(
+            f"data/{session_state.img_option}/{session_state.img_option}.pkl"
+        )
         anchor_boxs(session_state)
 
     elif step_option == APP_PAGES[3]:

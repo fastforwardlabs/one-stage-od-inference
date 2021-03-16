@@ -50,10 +50,10 @@ def save_figure_images(session_state):
 
     # save anchorbox images
     rpn = {}
-    for pyramid_level, fig in session_state.data_artifacts["anchor_plots"].items():
+    for pyramid_level, data in session_state.data_artifacts["anchor_plots"].items():
         rpn_img_path = os.path.join(DIR, "rpn", f"{pyramid_level}.png")
         rpn[pyramid_level] = rpn_img_path
-        fig.savefig(rpn_img_path)
+        data["fig"].savefig(rpn_img_path)
 
     img_paths["rpn"] = rpn
 
