@@ -12,7 +12,12 @@ import SessionState
 from welcome import welcome
 from fpn import feature_extraction
 from rpn import anchor_boxs
-from src.data_utils import gather_data_artifacts, create_pickle, load_pickle
+from src.data_utils import (
+    gather_data_artifacts,
+    create_pickle,
+    load_pickle,
+    save_figure_images,
+)
 from src.app_utils import (
     PRESET_IMAGES,
     APP_PAGES,
@@ -41,12 +46,15 @@ def main():
 
         # # for saving preset objects only
         # session_state.data_artifacts = gather_data_artifacts(session_state.img_path)
+        # session_state.img_paths = save_figure_images(session_state)
         # create_pickle(session_state, f"data/{session_state.img_option}.pkl")
 
         if not session_state.img_option in PRESET_IMAGES.keys():
             session_state.data_artifacts = gather_data_artifacts(session_state.img_path)
+            session_state.img_paths = save_figure_images(session_state)
         else:
             session_state = load_pickle(f"data/{session_state.img_option}.pkl")
+            print(session_state.img_paths)
 
         feature_extraction(session_state)
 

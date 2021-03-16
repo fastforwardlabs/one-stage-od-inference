@@ -10,7 +10,9 @@ from torch.jit.annotations import Dict, List, Tuple
 from torchvision.models.utils import load_state_dict_from_url
 
 from torchvision.models.detection import _utils as det_utils
-from torchvision.models.detection.anchor_utils import AnchorGenerator
+
+# from torchvision.models.detection.anchor_utils import AnchorGenerator
+from src.anchor_utils import AnchorGenerator
 from torchvision.models.detection.transform import GeneralizedRCNNTransform
 from torchvision.models.detection.backbone_utils import resnet_fpn_backbone
 from torchvision.ops.feature_pyramid_network import LastLevelP6P7
@@ -614,7 +616,6 @@ class RetinaNet(nn.Module):
 
         # transform the input
         images, targets = self.transform(images, targets)
-        print("yooo", images.image_sizes)
         # Check for degenerate boxes
         # TODO: Move this to a function
         if targets is not None:

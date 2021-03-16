@@ -3,6 +3,7 @@ import torch
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
+from PIL import Image
 
 from src.retinanet import retinanet_resnet50_fpn
 
@@ -227,7 +228,7 @@ def plot_pyramid_level_anchors(
     ax.set_yticks(np.arange(0, image_size[0], strides[pyramid_level_idx][0]))
     ax.axes.xaxis.set_ticklabels([])
     ax.axes.yaxis.set_ticklabels([])
-    ax.title(f"P{pyramid_level_idx+3} - ")
+    # ax.title(f"P{pyramid_level_idx+3} - ")
     ax.imshow(img.resize(image_size[::-1]), aspect="auto", alpha=0.4)
 
     box_centers = [
@@ -252,5 +253,100 @@ def plot_pyramid_level_anchors(
                 facecolor="none",
             )
             ax.add_patch(patch)
+
+    return fig
+
+
+def get_anchor_plots(image, anchor_generator, pred_boxes, features):
+
+    anchor_plots = {}
+    for i in range(5):
+        fig = plot_pyramid_level_anchors2(
+            i,
+            img=image,
+            image_size=anchor_generator.anchor_artifacts["image_size"],
+            strides=anchor_generator.anchor_artifacts["strides"],
+            cell_anchors=anchor_generator.cell_anchors.copy(),
+            pred_boxes=pred_boxes,
+            features=features,
+        )
+        anchor_plots[f"P{i+3}"] = fig
+
+    return anchor_plots
+
+
+def plot_pyramid_level_anchors2(
+    pyramid_level_idx, img, image_size, strides, cell_anchors, pred_boxes, features
+):
+    """
+    This function overlays a full set of anchor boxes (all aspect ratios and sizes) on a given image
+    centered atop each object detected in the image. Specifiying the pyramid level allows you to
+    visualize the size of the anchor boxes relative to the feature map resolution (shown by grid size)
+
+    Args:
+        pyramide_level_index (int)
+        img (PIL.Image.Image)
+        image_size (torch.Size)
+        strides (List[List[torch.Tensor]])
+        cell_anchors (List[torch.Tensor])
+        pred_boxes (torch.Tensor)
+        features (List[torch.Tensor])
+
+    Returns:
+        fig - matplotlib figure
+
+    """
+
+    figsize = [round(i / 100) for i in image_size]
+    figsize[0] = figsize[0] * 2
+    fig, (ax1, ax2) = plt.subplots(nrows=2, ncols=1, figsize=(figsize[::-1]))
+    ax1.grid(True)
+    ax1.set_xticks(np.arange(0, image_size[1], strides[pyramid_level_idx][1]))
+    ax1.set_yticks(np.arange(0, image_size[0], strides[pyramid_level_idx][0]))
+    ax1.axes.xaxis.set_ticklabels([])
+    ax1.axes.yaxis.set_ticklabels([])
+    ax1.imshow(img.resize(image_size[::-1]), aspect="auto", alpha=0.4)
+
+    box_centers = [
+        ((box[2] - box[0]) / 2 + box[0], (box[3] - box[1]) / 2 + box[1])
+        for box in pred_boxes.tolist()
+    ]
+
+    for box_center in box_centers:
+        for i, box in enumerate(cell_anchors[pyramid_level_idx]):
+            x, y, width, height = convert_bb_spec(*box)
+
+            x_offset = box_center[0]
+            y_offset = box_center[1]
+
+            patch = patches.Rectangle(
+                (x + x_offset, y + y_offset),
+                width,
+                height,
+                alpha=0.5,
+                edgecolor="red",
+                linewidth=2,
+                facecolor="none",
+            )
+            ax1.add_patch(patch)
+
+    fm = features[pyramid_level_idx][:, 66, :, :].detach().numpy()
+    fm = np.rollaxis(fm, 0, 3)
+    fm_norm = (
+        ((fm - fm.min()) * (1 / (fm.max() - fm.min()) * 255)).astype("uint8").squeeze(2)
+    )
+    fm_img = Image.fromarray(fm_norm).resize(image_size[::-1])
+    ax2.grid(True)
+    ax2.set_xticks(np.arange(0, image_size[1], strides[pyramid_level_idx][1]))
+    ax2.set_yticks(np.arange(0, image_size[0], strides[pyramid_level_idx][0]))
+    ax2.axes.xaxis.set_ticklabels([])
+    ax2.axes.yaxis.set_ticklabels([])
+
+    ax2.imshow(
+        fm_img,
+        aspect="auto",
+    )
+
+    plt.tight_layout()
 
     return fig

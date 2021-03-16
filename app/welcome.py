@@ -9,7 +9,7 @@ def welcome(session_state, preset_images):
         "Object detection is a critical task in computer vision - powering use cases such as autonomous driving, surveillance, \
         defect detection in manufacturing, medical image analysis, and more. This application offers a step-by-step walkthrough to help \
         visualize the inference workflow of a single-stage object detector. Specifically, we'll see how a pre-trained [RetinaNet](https://arxiv.org/abs/1708.02002) \
-        model processes an image to quickly and accurately detect objects while learning about fundamental object detection concepts along the way."
+        model processes an image to quickly and accurately detect objects while exploring fundamental object detection concepts along the way."
     )
 
     with st.beta_expander("Object Detection - A Brief Overview", expanded=True):
@@ -32,7 +32,7 @@ def welcome(session_state, preset_images):
         )
         st.write(
             "RetinaNet was the first one-stage object detection model to uphold the speed benefits of a one-stage detector, while surpassing the accuracy of (at the time) all existing \
-            state-of-the-art two-stage detectors. This was achieved by piecing together standard components like a Feature Pyramid Network (FPN) backbone, anchor boxes, dedicated classification \
+            state-of-the-art two-stage detectors. This was achieved by piecing together standard components like a Feature Pyramid Network (FPN) backbone, a Region Proposal Network (RPN), dedicated classification \
             and box regression sub networks, and introducing a novel loss function called Focal Loss."
         )
         st.write(
