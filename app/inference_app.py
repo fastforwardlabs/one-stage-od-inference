@@ -13,6 +13,7 @@ from welcome import welcome
 from fpn import fpn
 from rpn import rpn
 from nms import nms
+from src.model_utils import COCO_LABELS
 from src.data_utils import (
     gather_data_artifacts,
     create_pickle,
@@ -30,7 +31,7 @@ st.set_option("deprecation.showPyplotGlobalUse", False)
 def main():
 
     step_option = st.sidebar.selectbox(
-        label="Step through the app here",
+        label="Step through the app here:",
         options=APP_PAGES,
     )
     session_state = SessionState.get()
@@ -43,11 +44,17 @@ def main():
     elif step_option == APP_PAGES[1]:
 
         with st.spinner("Hang tight while your image is processed!"):
+
             if session_state.img_option not in PRESET_IMAGES.keys():
-
                 if not hasattr(session_state, "data_artifacts"):
-
                     session_state._prepare_data_assets()
+
+                    if len(session_state.data_artifacts["outputs"]["boxes"]) == 0:
+                        st.error(
+                            f"Sorry! The image you uploaded doesn't contain any recognizable objects. \
+                            Please try another image that contains one of the following classes: \
+                            \n\n {', '.join([label for label in COCO_LABELS if label not in ['N/A', '__background__']])}"
+                        )
 
             else:
                 # uncomment these two lines to build preset data pickles
