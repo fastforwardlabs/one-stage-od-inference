@@ -18,7 +18,7 @@ APP_PAGES = [
     "0. Welcome",
     "1. Feature Extraction",
     "2. Region Proposal Network",
-    "3. Post Processing",
+    "3. Non-Maximum Suppression",
 ]
 
 
@@ -49,13 +49,13 @@ def plot_predictions(image, outputs, label_map, nms_off=False):
     """
 
     fig, ax = plt.subplots(1, figsize=(10, 10))
-    ax.imshow(image)
+    ax.imshow(image, aspect="auto")
 
     np.random.seed(24)
     colors = np.random.uniform(size=(len(label_map), 3))
     boxes, scores, labels = outputs.values()
 
-    for i, box in enumerate(boxes):
+    for i, box in enumerate(boxes.detach().numpy()):
 
         x, y, width, height = convert_bb_spec(*box)
         top = y + height
@@ -93,7 +93,9 @@ def plot_predictions(image, outputs, label_map, nms_off=False):
         )
 
     plt.axis("off")
-    plt.show()
+    plt.tight_layout()
+
+    return fig
 
 
 def sample_feature_maps(features, n):
@@ -131,8 +133,8 @@ def plot_feature_samples(samples):
     rows = samples[0].shape[0]
     columns = len(samples)
 
-    fig = plt.figure(figsize=(16, 18))
-    grid = plt.GridSpec(nrows=rows, ncols=columns, figure=fig, wspace=0.3, hspace=0.1)
+    fig = plt.figure(figsize=(12, 12))
+    grid = plt.GridSpec(nrows=rows, ncols=columns, figure=fig, wspace=0.15, hspace=0.1)
 
     for i, layer in samples.items():
         for j in range(rows):

@@ -4,12 +4,12 @@ import streamlit as st
 
 
 def welcome(session_state, preset_images):
-    st.title("Inference Visualizer: One-Stage Object Detection")
+    st.title("Object Detection Inference: _Visualized_")
     st.write(
         "Object detection is a critical task in computer vision - powering use cases such as autonomous driving, surveillance, \
         defect detection in manufacturing, medical image analysis, and more. This application offers a step-by-step walkthrough to help \
         visualize the inference workflow of a single-stage object detector. Specifically, we'll see how a pre-trained [RetinaNet](https://arxiv.org/abs/1708.02002) \
-        model processes an image to quickly and accurately detect objects while exploring fundamental object detection concepts along the way."
+        model processes an image to quickly and accurately detect objects while also exploring fundamental object detection concepts along the way."
     )
 
     with st.beta_expander("Object Detection - A Brief Overview", expanded=True):
@@ -22,7 +22,7 @@ def welcome(session_state, preset_images):
         st.write(
             "In contrast, one-stage detectors must localize and classify a much larger set of densely sampled candidate object locations all in one pass. By design, these detectors can \
             attain faster prediction speeds, but must overcome the inherent challenge of efficiently disambiguating between background noise and actual \
-            object signal *without* the privilege of a dedicated proposal network."
+            object signal *without* the privilege of a independent proposal system."
         )
 
     with st.beta_expander("RetinaNet"):

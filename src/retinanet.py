@@ -534,7 +534,7 @@ class RetinaNet(nn.Module):
                 # non-maximum suppression, independently done per class
                 if self.nms_off:
                     keep = torch.argsort(scores_per_class, descending=True)[
-                        :15
+                        :20
                     ]  # added by ARR to collect w/o NMS
                 else:
                     keep = box_ops.nms(

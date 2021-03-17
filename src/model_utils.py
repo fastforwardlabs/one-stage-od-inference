@@ -20,6 +20,7 @@ COCO_LABELS = [
     "boat",
     "traffic light",
     "fire hydrant",
+    "N/A",
     "stop sign",
     "parking meter",
     "bench",
@@ -33,8 +34,11 @@ COCO_LABELS = [
     "bear",
     "zebra",
     "giraffe",
+    "N/A",
     "backpack",
     "umbrella",
+    "N/A",
+    "N/A",
     "handbag",
     "tie",
     "suitcase",
@@ -49,6 +53,7 @@ COCO_LABELS = [
     "surfboard",
     "tennis racket",
     "bottle",
+    "N/A",
     "wine glass",
     "cup",
     "fork",
@@ -69,8 +74,12 @@ COCO_LABELS = [
     "couch",
     "potted plant",
     "bed",
+    "N/A",
     "dining table",
+    "N/A",
+    "N/A",
     "toilet",
+    "N/A",
     "tv",
     "laptop",
     "mouse",
@@ -82,6 +91,7 @@ COCO_LABELS = [
     "toaster",
     "sink",
     "refrigerator",
+    "N/A",
     "book",
     "clock",
     "vase",
@@ -124,14 +134,14 @@ def predict(model, image, transform, detection_threshold):
     return outputs
 
 
-def get_inference_artifacts(img_path):
+def get_inference_artifacts(img_path, nms_off=False):
     """
     Given an image path, this function makes inference on the image and returns
     both the outputs and the model (with saved artifacts)
     """
 
     retinanet = retinanet_resnet50_fpn(
-        pretrained=True, pretrained_backbone=True, nms_off=False
+        pretrained=True, pretrained_backbone=True, nms_off=nms_off
     )
 
     transform = transforms.Compose(
@@ -142,14 +152,19 @@ def get_inference_artifacts(img_path):
 
     img = Image.open(img_path)
 
-    # resize image to fullsize
+    # resize image to fullsize according to RetinaNet min/max transform
     full_size = retinanet.transform(transform(img).unsqueeze(0))[0].tensors.size()[2:][
         ::-1
     ]
     img = img.resize(full_size)
 
     outputs = predict(
-        model=retinanet, image=img, transform=transform, detection_threshold=0.9
+        model=retinanet,
+        image=img,
+        transform=transform,
+        detection_threshold=0.8,
     )
 
-    return outputs, retinanet, img
+    inference_artifacts = {"outputs": outputs, "model": retinanet, "image": img}
+
+    return inference_artifacts
