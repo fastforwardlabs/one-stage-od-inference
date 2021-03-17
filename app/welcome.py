@@ -87,14 +87,6 @@ def welcome(session_state, preset_images):
                     img = Image.open(uploaded_image)
                     st.image(img, caption="Uploaded Image")
 
-                    # with col1:
-                    #     st.text("")
-                    #     st.text("")
-                    #     st.text("")
-                    #     confirm = st.button("Confirm this image")
-
-                    # if confirm:
-
                     # create folder directory to hold assets
                     img_option = "custom"
                     parent_dir = f"data/{img_option}"
@@ -115,5 +107,10 @@ def welcome(session_state, preset_images):
 
                     session_state.img_option = img_option
                     session_state.img_path = img_path
+
+        st.info(
+            "After selecting an image, use the navigation drop down menu in the top \
+            left sidebar to advance to the next page: **1. Feature Extraction**"
+        )
 
     return session_state
