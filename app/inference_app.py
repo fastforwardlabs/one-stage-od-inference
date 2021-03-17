@@ -42,21 +42,23 @@ def main():
 
     elif step_option == APP_PAGES[1]:
 
-        if session_state.img_option not in PRESET_IMAGES.keys():
+        with st.spinner("Hang tight while your image is processed!"):
+            if session_state.img_option not in PRESET_IMAGES.keys():
 
-            if not hasattr(session_state, "data_artifacts"):
-                session_state._prepare_data_assets()
+                if not hasattr(session_state, "data_artifacts"):
 
-        else:
-            # uncomment these two lines to build preset data pickles
-            # also need to manually add sub-directories
-            # session_state._prepare_data_assets()
-            # create_pickle(
-            #     session_state,
-            #     f"{session_state.ROOT_PATH}/{session_state.img_option}.pkl",
-            # )
+                    session_state._prepare_data_assets()
 
-            session_state = load_pickle(session_state.pkl_path)
+            else:
+                # uncomment these two lines to build preset data pickles
+                # also need to manually add sub-directories
+                # session_state._prepare_data_assets()
+                # create_pickle(
+                #     session_state,
+                #     f"{session_state.ROOT_PATH}/{session_state.img_option}.pkl",
+                # )
+
+                session_state = load_pickle(session_state.pkl_path)
 
         fpn(session_state)
 
