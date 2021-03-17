@@ -78,6 +78,6 @@ def rpn(session_state):
                 f'**Anchor Sizes:** {stats["anchor_sizes"]} px$^2$ \n\n **Anchor Stride:** ({" x ".join([str(stat) for stat in stats["stride"]])}) px'
             )
 
-        st.image(session_state.img_paths["rpn"][pyramid_level])
+        st.image(session_state.fig_paths["rpn"][pyramid_level])
 
     return

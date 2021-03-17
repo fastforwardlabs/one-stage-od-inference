@@ -62,8 +62,8 @@ def nms(session_state):
             nms_checkbox = st.checkbox("Apply Non-Max Suppression")
 
         if nms_checkbox:
-            st.image(session_state.img_paths["nms"]["with_nms"])
+            st.image(session_state.fig_paths["nms"]["with_nms"])
         else:
-            st.image(session_state.img_paths["nms"]["without_nms"])
+            st.image(session_state.fig_paths["nms"]["without_nms"])
 
     return

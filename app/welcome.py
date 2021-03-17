@@ -1,6 +1,10 @@
 import os
 import sys
+import shutil
 import streamlit as st
+from PIL import Image
+
+from src.data_utils import create_directory_structure
 
 
 def welcome(session_state, preset_images):
@@ -16,7 +20,7 @@ def welcome(session_state, preset_images):
         st.write(
             "In the field of computer vision, object detection refers to the task of classifying and localizing distinct objects of interest within an image. \
             Traditionally, state-of-the-art object detectors have been based on a two-stage architecture, where the first stage narrows the search space by \
-            generating a sparse set of candidate object location proposals, and the second stage then classifies each proposal. While this approach produces \
+            generating a sparse set of candidate object location proposals, and the second stage then classifies the narrowed down list of proposals. While this approach produces \
             models with high accuracy, there is a significant tradeoff in speed, making these detectors impractical for real time use cases."
         )
         st.write(
@@ -42,15 +46,74 @@ def welcome(session_state, preset_images):
 
     with st.beta_expander("Let's Get Started"):
 
-        img_option = st.selectbox(
-            "Select an image to make inference on",
-            [key.capitalize() for key in preset_images.keys()],
-            index=0,
+        st.write(
+            "To get started, select one of the preset images _or_ upload your own image to use throughout the application:"
         )
 
-        # display selected image
-        img_option = img_option.lower()
-        img_path = preset_images[img_option]
-        st.image(img_path)
+        col1, col2 = st.beta_columns([1, 2])
 
-    return img_option, img_path
+        with col1:
+            img_setting = st.radio(
+                label="Select an image setting",
+                options=("Preset image", "Upload your own"),
+            )
+
+        with col2:
+            if img_setting == "Preset image":
+                img_option = st.selectbox(
+                    "Select an preset image from the list below",
+                    [key.capitalize() for key in preset_images.keys()],
+                    index=0,
+                )
+
+                # display selected image
+                img_option = img_option.lower()
+                img_path = preset_images[img_option]
+                st.image(img_path)
+
+                session_state.img_option = img_option
+                session_state.img_path = img_path
+
+            elif img_setting == "Upload your own":
+                uploaded_image = st.file_uploader(
+                    label="Upload your image here",
+                    type=["png", "jpg"],
+                    accept_multiple_files=False,
+                )
+
+                if uploaded_image is not None:
+
+                    # display image
+                    img = Image.open(uploaded_image)
+                    st.image(img, caption="Uploaded Image")
+
+                    # with col1:
+                    #     st.text("")
+                    #     st.text("")
+                    #     st.text("")
+                    #     confirm = st.button("Confirm this image")
+
+                    # if confirm:
+
+                    # create folder directory to hold assets
+                    img_option = "custom"
+                    parent_dir = f"data/{img_option}"
+
+                    if os.path.exists(parent_dir):
+                        shutil.rmtree(parent_dir)
+
+                    create_directory_structure(img_option)
+
+                    # save image to directory
+                    file_type = uploaded_image.name.split(".")[-1]
+
+                    if file_type == "png":
+                        img = img.convert("RGB")
+
+                    img_path = f"data/{img_option}/{img_option}.jpg"
+                    img.save(img_path, "jpeg")
+
+                    session_state.img_option = img_option
+                    session_state.img_path = img_path
+
+    return session_state

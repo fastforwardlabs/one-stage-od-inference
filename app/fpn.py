@@ -58,5 +58,5 @@ def fpn(session_state):
             maintain higher resolution, but semantically weaker attributes which are useful for detecting small objects. In contrast, features from the final pyramid level \
             (P7) hold much lower resolution, but semantically stronger activations, making them effective for identifying larger objects."
         )
-        st.image(session_state.img_paths["fpn"], use_column_width="auto")
+        st.image(session_state.fig_paths["fpn"], use_column_width="auto")
     return

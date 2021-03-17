@@ -19,6 +19,9 @@ result:
 'Mary'
 
 """
+
+import os
+
 try:
     import streamlit.ReportThread as ReportThread
     from streamlit.server.Server import Server
@@ -26,6 +29,8 @@ except Exception:
     # Streamlit >= 0.65.0
     import streamlit.report_thread as ReportThread
     from streamlit.server.server import Server
+
+from src.data_utils import gather_data_artifacts, create_pickle
 
 
 class SessionState(object):
@@ -48,6 +53,48 @@ class SessionState(object):
         """
         for key, val in kwargs.items():
             setattr(self, key, val)
+
+    def _set_path_attributes(self):
+
+        ROOT_PATH = f"data/{self.img_option}"
+
+        self.img_option = self.img_option
+        self.ROOT_PATH = ROOT_PATH
+        self.pkl_path = f"{ROOT_PATH}/{self.img_option}.pkl"
+
+    def _save_figure_images(self):
+
+        fig_paths = {}
+
+        # save feature map figure
+        fpn_img_path = os.path.join(self.ROOT_PATH, "fpn", "feature_map_fig.png")
+        fig_paths["fpn"] = fpn_img_path
+        self.data_artifacts["feature_map_fig"].savefig(fpn_img_path)
+
+        # save anchor box figures
+        rpn = {}
+        for pyramid_level, data in self.data_artifacts["anchor_plots"].items():
+            rpn_img_path = os.path.join(self.ROOT_PATH, "rpn", f"{pyramid_level}.png")
+            rpn[pyramid_level] = rpn_img_path
+            data["fig"].savefig(rpn_img_path)
+
+        fig_paths["rpn"] = rpn
+
+        # save final prediction figures
+        nms = {}
+        for nms_setting, fig in self.data_artifacts["prediction_figures"].items():
+            nms_img_path = os.path.join(self.ROOT_PATH, "nms", f"{nms_setting}.png")
+            nms[nms_setting] = nms_img_path
+            fig.savefig(nms_img_path)
+
+        fig_paths["nms"] = nms
+
+        return fig_paths
+
+    def _prepare_data_assets(self):
+
+        self.data_artifacts = gather_data_artifacts(img_path=self.img_path)
+        self.fig_paths = self._save_figure_images()
 
 
 def get(**kwargs):

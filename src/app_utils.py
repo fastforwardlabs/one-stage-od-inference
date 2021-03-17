@@ -9,9 +9,8 @@ from src.retinanet import retinanet_resnet50_fpn
 
 
 PRESET_IMAGES = {
-    "giraffe": "images/giraffe.jpg",
-    "soccer": "images/soccer_img.jpg",
-    "snowboard": "images/snowboard.jpg",
+    "giraffe": "data/giraffe/giraffe.jpg",
+    "snowboard": "data/snowboard/snowboard.jpg",
 }
 
 APP_PAGES = [

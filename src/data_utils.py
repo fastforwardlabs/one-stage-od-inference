@@ -1,11 +1,17 @@
 import os
 import pickle
 
-import app.SessionState
-from app.SessionState import SessionState
 from src.model_utils import COCO_LABELS
 from src.model_utils import get_inference_artifacts
 from src.app_utils import get_feature_map_plot, get_anchor_plots, plot_predictions
+
+
+def create_directory_structure(dirname):
+    """ Builds skeleton folder structure to hold artifacts used in the app"""
+
+    os.makedirs(f"data/{dirname}")
+    for subdir in ["fpn", "rpn", "nms"]:
+        os.makedirs(f"data/{dirname}/{subdir}")
 
 
 def gather_data_artifacts(img_path):
@@ -51,37 +57,6 @@ def gather_data_artifacts(img_path):
     }
 
     return data_artifacts
-
-
-def save_figure_images(session_state):
-
-    DIR = f"data/{session_state.img_option}"
-    img_paths = {}
-
-    # save feature map figure
-    fpn_img_path = os.path.join(DIR, "fpn", "feature_map_fig.png")
-    img_paths["fpn"] = fpn_img_path
-    session_state.data_artifacts["feature_map_fig"].savefig(fpn_img_path)
-
-    # save anchor box figures
-    rpn = {}
-    for pyramid_level, data in session_state.data_artifacts["anchor_plots"].items():
-        rpn_img_path = os.path.join(DIR, "rpn", f"{pyramid_level}.png")
-        rpn[pyramid_level] = rpn_img_path
-        data["fig"].savefig(rpn_img_path)
-
-    img_paths["rpn"] = rpn
-
-    # save final prediction figures
-    nms = {}
-    for nms_setting, fig in session_state.data_artifacts["prediction_figures"].items():
-        nms_img_path = os.path.join(DIR, "nms", f"{nms_setting}.png")
-        nms[nms_setting] = nms_img_path
-        fig.savefig(nms_img_path)
-
-    img_paths["nms"] = nms
-
-    return img_paths
 
 
 def create_pickle(obj, filepath):

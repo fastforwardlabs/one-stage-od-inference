@@ -17,7 +17,6 @@ from src.data_utils import (
     gather_data_artifacts,
     create_pickle,
     load_pickle,
-    save_figure_images,
 )
 from src.app_utils import (
     PRESET_IMAGES,
@@ -30,50 +29,41 @@ st.set_option("deprecation.showPyplotGlobalUse", False)
 
 def main():
 
-    session_state = SessionState.get(img_option=None, img_path=None)
-
     step_option = st.sidebar.selectbox(
         label="Step through the app here",
         options=APP_PAGES,
     )
+    session_state = SessionState.get()
 
     if step_option == APP_PAGES[0]:
-        img_option, img_path = welcome(session_state, PRESET_IMAGES)
 
-        session_state.img_option = img_option
-        session_state.img_path = img_path
+        session_state = welcome(session_state, PRESET_IMAGES)
+        session_state._set_path_attributes()
 
     elif step_option == APP_PAGES[1]:
 
-        # # for saving preset objects only
-        # session_state.data_artifacts = gather_data_artifacts(session_state.img_path)
-        # session_state.img_paths = save_figure_images(session_state)
-        # create_pickle(
-        #     session_state,
-        #     f"data/{session_state.img_option}/{session_state.img_option}.pkl",
-        # )
+        if session_state.img_option not in PRESET_IMAGES.keys():
 
-        if not session_state.img_option in PRESET_IMAGES.keys():
-            session_state.data_artifacts = gather_data_artifacts(session_state.img_path)
-            session_state.img_paths = save_figure_images(session_state)
+            if not hasattr(session_state, "data_artifacts"):
+                session_state._prepare_data_assets()
+
         else:
-            session_state = load_pickle(
-                f"data/{session_state.img_option}/{session_state.img_option}.pkl"
-            )
+            # uncomment these two lines to build preset data pickles
+            # also need to manually add sub-directories
+            # session_state._prepare_data_assets()
+            # create_pickle(
+            #     session_state,
+            #     f"{session_state.ROOT_PATH}/{session_state.img_option}.pkl",
+            # )
+
+            session_state = load_pickle(session_state.pkl_path)
 
         fpn(session_state)
 
     elif step_option == APP_PAGES[2]:
-        session_state = load_pickle(
-            f"data/{session_state.img_option}/{session_state.img_option}.pkl"
-        )
         rpn(session_state)
 
     elif step_option == APP_PAGES[3]:
-        session_state = load_pickle(
-            f"data/{session_state.img_option}/{session_state.img_option}.pkl"
-        )
-
         nms(session_state)
 
 
