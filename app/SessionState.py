@@ -112,7 +112,9 @@ class SessionState(object):
         # save feature map figure
         fpn_img_path = os.path.join(self.ROOT_PATH, "fpn", "feature_map_fig.png")
         fig_paths["fpn"] = fpn_img_path
-        self.data_artifacts["feature_map_fig"].savefig(fpn_img_path, , bbox_inches='tight')
+        self.data_artifacts["feature_map_fig"].savefig(
+            fpn_img_path, bbox_inches="tight"
+        )
 
         # save anchor box figures
         rpn = {}
