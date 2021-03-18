@@ -6,26 +6,18 @@ import pandas as pd
 import numpy as np
 import time
 
+st.set_option("deprecation.showPyplotGlobalUse", False)
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
 import SessionState
 from app_pages import welcome, fpn, rpn, nms, references
 from src.model_utils import COCO_LABELS
-from src.data_utils import (
-    gather_data_artifacts,
-    create_pickle,
-    load_pickle,
-)
-from src.app_utils import (
-    PRESET_IMAGES,
-    APP_PAGES,
-    get_feature_map_plot,
-)
-
-st.set_option("deprecation.showPyplotGlobalUse", False)
+from src.app_utils import PRESET_IMAGES, APP_PAGES
+from src.data_utils import create_pickle, load_pickle
 
 
 def main():
+    """This function acts as the scaffolding to operate the multi-page Streamlit App"""
 
     step_option = st.sidebar.selectbox(
         label="Step through the app here:",

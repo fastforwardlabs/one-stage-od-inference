@@ -46,6 +46,9 @@ def plot_predictions(image, outputs, label_map, nms_off=False):
         label_map - list mapping of idx to label name
         nms_off - indicates if visualization is with or without NMS
 
+    Returns:
+        maplotlib Figure
+
     """
 
     fig, ax = plt.subplots(1, figsize=(10, 10))
@@ -173,6 +176,9 @@ def plot_anchors(image, boxes, sample):
         boxes - Tensor(N,4) of all anchor box specs
         sample - percentage of anchorboxes to randomly select for visualization
 
+    Returns:
+        matplotlib Figure
+
     """
 
     fig, ax = plt.subplots(1, figsize=(10, 10))
@@ -202,68 +208,11 @@ def plot_anchors(image, boxes, sample):
     return fig
 
 
-def plot_pyramid_level_anchors(
-    pyramid_level_idx, img, image_size, strides, cell_anchors, pred_boxes
-):
-    """
-    This function overlays a full set of anchor boxes (all aspect ratios and sizes) on a given image
-    centered atop each object detected in the image. Specifiying the pyramid level allows you to
-    visualize the size of the anchor boxes relative to the feature map resolution (shown by grid size)
-
-    Args:
-        pyramide_level_index (int)
-        img (PIL.Image.Image)
-        image_size (torch.Size)
-        strides (List[List[torch.Tensor]])
-        cell_anchors (List[torch.Tensor])
-        pred_boxes (torch.Tensor)
-
-    Returns:
-        fig - matplotlib figure
-
-    """
-
-    figsize = [round(i / 100) for i in image_size]
-    fig, ax = plt.subplots(1, figsize=(figsize[::-1]))
-    ax.grid(True)
-    ax.set_xticks(np.arange(0, image_size[1], strides[pyramid_level_idx][1]))
-    ax.set_yticks(np.arange(0, image_size[0], strides[pyramid_level_idx][0]))
-    ax.axes.xaxis.set_ticklabels([])
-    ax.axes.yaxis.set_ticklabels([])
-    # ax.title(f"P{pyramid_level_idx+3} - ")
-    ax.imshow(img.resize(image_size[::-1]), aspect="auto", alpha=0.4)
-
-    box_centers = [
-        ((box[2] - box[0]) / 2 + box[0], (box[3] - box[1]) / 2 + box[1])
-        for box in pred_boxes.tolist()
-    ]
-
-    for box_center in box_centers:
-        for i, box in enumerate(cell_anchors[pyramid_level_idx]):
-            x, y, width, height = convert_bb_spec(*box)
-
-            x_offset = box_center[0]
-            y_offset = box_center[1]
-
-            patch = patches.Rectangle(
-                (x + x_offset, y + y_offset),
-                width,
-                height,
-                alpha=0.5,
-                edgecolor="red",
-                linewidth=2,
-                facecolor="none",
-            )
-            ax.add_patch(patch)
-
-    return fig
-
-
 def get_anchor_plots(image, anchor_generator, pred_boxes, features):
 
     anchor_plots = {}
     for i in range(5):
-        fig, fig_stats = plot_pyramid_level_anchors2(
+        fig, fig_stats = plot_pyramid_level_anchors(
             i,
             img=image,
             image_size=anchor_generator.anchor_artifacts["image_size"],
@@ -279,7 +228,7 @@ def get_anchor_plots(image, anchor_generator, pred_boxes, features):
     return anchor_plots
 
 
-def plot_pyramid_level_anchors2(
+def plot_pyramid_level_anchors(
     pyramid_level_idx,
     img,
     image_size,
@@ -303,6 +252,7 @@ def plot_pyramid_level_anchors2(
         cell_anchors (List[torch.Tensor])
         pred_boxes (torch.Tensor)
         features (List[torch.Tensor])
+        anchors_sizes (List[tuple])
 
     Returns:
         fig - matplotlib figure

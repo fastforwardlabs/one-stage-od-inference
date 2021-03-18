@@ -1,3 +1,6 @@
+# This module is adapted from the original Pytorch torchvision module
+# found at https://github.com/pytorch/vision/blob/master/torchvision/models/detection/anchor_utils.py
+
 # Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 import torch
 from torch import nn, Tensor

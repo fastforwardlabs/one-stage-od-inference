@@ -114,8 +114,6 @@ def predict(model, image, transform, detection_threshold):
 
     Returns:
         outputs - dict containing boxes, scores, labels for predictions
-
-
     """
 
     if model.training:
