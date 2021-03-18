@@ -160,7 +160,7 @@ def get_inference_artifacts(img_path, nms_off=False):
         model=retinanet,
         image=img,
         transform=transform,
-        detection_threshold=0.8,
+        detection_threshold=0.7,
     )
 
     inference_artifacts = {"outputs": outputs, "model": retinanet, "image": img}

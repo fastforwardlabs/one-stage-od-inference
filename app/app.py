@@ -50,14 +50,14 @@ def main():
 
             else:
                 # uncomment these two lines to build preset data pickles
-                # # also need to manually add sub-directories
+                # also need to manually add sub-directories
                 # session_state._prepare_data_assets()
                 # create_pickle(
                 #     session_state,
                 #     f"{session_state.ROOT_PATH}/{session_state.img_option}.pkl",
                 # )
 
-                session_state = load_pickle(session_state.pkl_path)
+                # session_state = load_pickle(session_state.pkl_path)
 
         fpn(session_state)
 

@@ -11,6 +11,8 @@ from src.retinanet import retinanet_resnet50_fpn
 PRESET_IMAGES = {
     "giraffe": "data/giraffe/giraffe.jpg",
     "snowboard": "data/snowboard/snowboard.jpg",
+    "sheep": "data/sheep/sheep.jpg",
+    "baseball": "data/baseball/baseball.jpg",
 }
 
 APP_PAGES = [
@@ -40,6 +42,8 @@ def plot_predictions(image, outputs, label_map, nms_off=False):
     """
     Overlay bounding box predictions on an image
 
+    If nms_off is True, jitter a series of bounding boxes to imitate non-nms behavior
+
     Args:
         image - PIL image as RGB format
         outputs - boxes, scores, labels output from predict()
@@ -56,9 +60,23 @@ def plot_predictions(image, outputs, label_map, nms_off=False):
 
     np.random.seed(24)
     colors = np.random.uniform(size=(len(label_map), 3))
+
+    outputs = {k: v.detach().numpy() for k, v in outputs.items()}
     boxes, scores, labels = outputs.values()
 
-    for i, box in enumerate(boxes.detach().numpy()):
+    if nms_off:
+        # append N new jittered boxes to simulate NMS, same for labels
+        N = 5
+        boxes = [[np.random.randn(4) * 5 + box for i in range(N)] for box in boxes]
+        boxes = np.array([x for l in boxes for x in l])
+
+        new_labels = []
+        for label in labels:
+            new_labels += N * [label]
+
+        labels = np.array(new_labels)
+
+    for i, box in enumerate(boxes):
 
         x, y, width, height = convert_bb_spec(*box)
         top = y + height

@@ -27,30 +27,28 @@ def gather_data_artifacts(img_path):
 
     """
 
-    with_nms, without_nms = [
-        get_inference_artifacts(img_path, nms_setting) for nms_setting in [False, True]
-    ]
-    feature_map_figure = get_feature_map_plot(with_nms["model"])
+    inference_artifacts = get_inference_artifacts(img_path, False)
+    feature_map_figure = get_feature_map_plot(inference_artifacts["model"])
     anchor_plots = get_anchor_plots(
-        with_nms["image"],
-        with_nms["model"].anchor_generator,
-        with_nms["outputs"]["boxes"],
-        with_nms["model"].viz_artifacts["features"],
+        inference_artifacts["image"],
+        inference_artifacts["model"].anchor_generator,
+        inference_artifacts["outputs"]["boxes"],
+        inference_artifacts["model"].viz_artifacts["features"],
     )
     prediction_figures = {
         k: plot_predictions(
-            image=v["image"],
-            outputs=v["outputs"],
+            image=inference_artifacts["image"],
+            outputs=inference_artifacts["outputs"],
             label_map=COCO_LABELS,
             nms_off=False if k == "with_nms" else True,
         )
-        for k, v in {"with_nms": with_nms, "without_nms": without_nms}.items()
+        for k in ["with_nms", "without_nms"]
     }
 
     data_artifacts = {
-        "outputs": with_nms["outputs"],
-        "image": with_nms["image"],
-        "viz_artifacts": with_nms["model"].viz_artifacts,
+        "outputs": inference_artifacts["outputs"],
+        "image": inference_artifacts["image"],
+        "viz_artifacts": inference_artifacts["model"].viz_artifacts,
         "feature_map_fig": feature_map_figure,
         "anchor_plots": anchor_plots,
         "prediction_figures": prediction_figures,
