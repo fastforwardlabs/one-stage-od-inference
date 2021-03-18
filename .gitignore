@@ -4,4 +4,5 @@ node_modules
 __pycache__
 .*
 !.gitignore
+!.project_metadata.yaml
 .ipynb_checkpoints
