@@ -17,7 +17,10 @@ from src.data_utils import create_pickle, load_pickle
 
 
 def main():
-    """This function acts as the scaffolding to operate the multi-page Streamlit App"""
+    """
+    This function acts as the scaffolding to operate the multi-page Streamlit App
+
+    """
 
     step_option = st.sidebar.selectbox(
         label="Step through the app here:",
