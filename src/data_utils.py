@@ -46,9 +46,7 @@ def gather_data_artifacts(img_path):
     }
 
     data_artifacts = {
-        "outputs": inference_artifacts["outputs"],
         "image": inference_artifacts["image"],
-        "viz_artifacts": inference_artifacts["model"].viz_artifacts,
         "feature_map_fig": feature_map_figure,
         "anchor_plots": anchor_plots,
         "prediction_figures": prediction_figures,

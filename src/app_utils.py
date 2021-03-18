@@ -11,7 +11,6 @@ from src.retinanet import retinanet_resnet50_fpn
 PRESET_IMAGES = {
     "giraffe": "data/giraffe/giraffe.jpg",
     "snowboard": "data/snowboard/snowboard.jpg",
-    "sheep": "data/sheep/sheep.jpg",
     "baseball": "data/baseball/baseball.jpg",
 }
 
