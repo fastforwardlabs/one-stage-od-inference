@@ -51,7 +51,7 @@ def plot_predictions(image, outputs, label_map, nms_off=False):
 
     """
 
-    fig, ax = plt.subplots(1, figsize=(10, 10))
+    fig, ax = plt.subplots(1)
     ax.imshow(image, aspect="auto")
 
     np.random.seed(24)

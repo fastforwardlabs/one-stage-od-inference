@@ -298,9 +298,9 @@ def nms(session_state):
         st.write(
             "2. Compare the _Intersection over Union (IoU)_ of that bounding box with all other bounding boxes."
         )
+
         col1, col2, col3 = st.beta_columns(3)
-        # with col1:
-        #     st.image("images/iou.png")
+
         with col2:
             with st.beta_container():
                 st.image("images/iou.png")
