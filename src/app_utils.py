@@ -203,6 +203,7 @@ def plot_feature_samples(samples):
                 ax.set_title(f"P{i+3}: {layer.shape[1]} x {layer.shape[2]}")
 
             ax.imshow(layer[j, :, :], aspect="auto")
+            ax.grid(False)
 
     return fig
 
