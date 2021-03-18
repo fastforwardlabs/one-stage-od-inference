@@ -40,9 +40,7 @@
 
 import os
 import sys
-import time
 import shutil
-import random
 import streamlit as st
 from PIL import Image
 

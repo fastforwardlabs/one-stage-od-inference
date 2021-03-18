@@ -41,10 +41,7 @@
 import os
 import sys
 import streamlit as st
-from PIL import Image
-import pandas as pd
 import numpy as np
-import time
 
 st.set_option("deprecation.showPyplotGlobalUse", False)
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
@@ -53,7 +50,7 @@ import SessionState
 from app_pages import welcome, fpn, rpn, nms, references
 from src.model_utils import COCO_LABELS
 from src.app_utils import PRESET_IMAGES, APP_PAGES
-from src.data_utils import create_pickle, load_pickle
+from src.data_utils import load_pickle
 
 
 def main():

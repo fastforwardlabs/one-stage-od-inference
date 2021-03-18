@@ -45,8 +45,6 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 from PIL import Image
 
-from src.retinanet import retinanet_resnet50_fpn
-
 
 PRESET_IMAGES = {
     "giraffe": "data/giraffe/giraffe.jpg",

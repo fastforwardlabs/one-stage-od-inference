@@ -39,9 +39,7 @@
 # ###########################################################################
 
 import os
-import pickle
 import numpy as np
-import matplotlib.pyplot as plt
 from PIL import Image
 from torchvision import transforms
 
