@@ -59,6 +59,7 @@ def main():
 
     """
 
+    st.sidebar.image("images/cloudera-fast-forward.png", use_column_width=True)
     step_option = st.sidebar.selectbox(
         label="Step through the app here:",
         options=APP_PAGES,
