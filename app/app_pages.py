@@ -1,6 +1,8 @@
 import os
 import sys
+import time
 import shutil
+import random
 import streamlit as st
 from PIL import Image
 
@@ -28,8 +30,8 @@ def welcome(session_state, preset_images):
         st.write(
             "In the field of computer vision, object detection refers to the task of classifying and localizing distinct objects of interest within an image. \
             Traditionally, state-of-the-art object detectors have been based on a two-stage architecture, where the first stage narrows the search space by \
-            generating a sparse set of candidate object location proposals, and the second stage then classifies the narrowed down list of proposals. While this approach produces \
-            models with high accuracy, there is a significant tradeoff in speed, making these detectors impractical for real time use cases."
+            generating a sparse set of candidate object location proposals, and the second stage then classifies the narrowed down list of proposals. While this approach yields \
+            high accuracy, there is a significant tradeoff in speed, making these detectors impractical for real time use cases."
         )
         st.write(
             "In contrast, one-stage detectors must localize and classify a much larger set of densely sampled candidate object locations all in one pass. By design, these detectors can \
@@ -55,7 +57,7 @@ def welcome(session_state, preset_images):
     with st.beta_expander("Let's Get Started"):
 
         st.write(
-            "To get started, select one of the preset images _or_ upload your own image to use throughout the application:"
+            "To begin, select one of the preset images _or_ upload your own image to use throughout the application:"
         )
 
         col1, col2 = st.beta_columns([1, 2])
@@ -118,7 +120,7 @@ def welcome(session_state, preset_images):
 
         st.info(
             "After selecting an image, use the navigation drop down menu in the top \
-            left sidebar to advance to the next page: **1. Feature Extraction**"
+            left sidebar to advance to the next page: ***1. Feature Extraction***"
         )
 
     return session_state
@@ -144,7 +146,7 @@ def fpn(session_state):
 
     with st.beta_expander("How Do FPNs Work?", expanded=False):
         st.write(
-            "Feature Pyramid Networks exploit the inherent mulit-scale, pyramidal hierarchy of deep CNNs to detect objects at different scales by augmenting the networks default, \
+            "Feature Pyramid Networks exploit the inherent mulit-scale, pyramidal hierarchy of deep CNNs to detect objects at different scales by augmenting a network's default, \
             bottom-up composition with a top-down pathway and lateral connections."
         )
         st.image(
@@ -195,7 +197,7 @@ def rpn(session_state):
         classified as object or not-object. But how can we capture the seemingly infinite object location, shape, and size possibilities that exist in an image?"
     )
     st.write(
-        "Early approaches to object detection tackled this problem using region proposal algorithms like [selective search]() where image segmentation \
+        "Early approaches to object detection tackled this problem using region proposal algorithms like [selective search](https://learnopencv.com/selective-search-for-object-detection-cpp-python/) where image segmentation \
             was used to compute hierarchical groupings of similar regions based on pixel adjacency, color, texture, and size. While effective, this process \
         is computationally expensive and slow as it requires a dedicated offline algorithm to generate object proposals."
     )
@@ -286,7 +288,8 @@ def nms(session_state):
 
     st.write(
         "First, RetinaNet selects up to 1,000 anchor boxes from each feature pyramid level that have the highest predicted probability of any class after thresholding detector confidence at 0.05. \
-        Then, the top predictions from all levels are merged together, and an algorithm called *Non-Maximum Suppression (NMS)* is applied with a threshold of 0.5 to yield the final set of non-redundant detections."
+        Then, the top predictions from all levels are merged together, and an algorithm called *Non-Maximum Suppression (NMS)* is applied with a threshold of 0.5 to yield the final set of non-redundant detections. \
+        Finally, we apply a confidence threshold of 0.7 to the remaining predictions to filter out noisy detections."
     )
 
     with st.beta_expander("How does NMS work?"):
@@ -324,7 +327,9 @@ def nms(session_state):
             nms_checkbox = st.checkbox("Apply Non-Max Suppression")
 
         if nms_checkbox:
-            st.image(session_state.fig_paths["nms"]["with_nms"])
+            st.image(
+                session_state.fig_paths["nms"]["with_nms"], use_column_width="auto"
+            )
         else:
             st.image(session_state.fig_paths["nms"]["without_nms"])
 
@@ -362,5 +367,6 @@ def references():
         - [Faster R-CNN: Down the rabbit hole of modern object detection](https://tryolabs.com/blog/2018/01/18/faster-r-cnn-down-the-rabbit-hole-of-modern-object-detection/)
         - [Region Proposal Network — A detailed view](https://towardsdatascience.com/region-proposal-network-a-detailed-view-1305c7875853)
         - [Faster R-CNN Explained for Object Detection Tasks](https://blog.paperspace.com/faster-r-cnn-explained-object-detection/)
+        - [Selective Search for Object Detection](https://learnopencv.com/selective-search-for-object-detection-cpp-python/)
         """
     )

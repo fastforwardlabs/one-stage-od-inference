@@ -57,7 +57,7 @@ def main():
                 #     f"{session_state.ROOT_PATH}/{session_state.img_option}.pkl",
                 # )
 
-                # session_state = load_pickle(session_state.pkl_path)
+                session_state = load_pickle(session_state.pkl_path)
 
         fpn(session_state)
 
