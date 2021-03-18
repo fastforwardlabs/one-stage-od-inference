@@ -39,7 +39,7 @@ def welcome(session_state, preset_images):
             object signal *without* the privilege of a independent proposal system."
         )
 
-    with st.beta_expander("RetinaNet"):
+    with st.beta_expander("RetinaNet", expanded=True):
         st.image(
             "images/retinanet_architecture.png",
             caption="The one-stage RetinaNet network architecture",
