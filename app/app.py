@@ -37,26 +37,18 @@ def main():
 
         with st.spinner("Hang tight while your image is processed!"):
 
-            if session_state.img_option not in PRESET_IMAGES.keys():
-                if not hasattr(session_state, "data_artifacts"):
-                    session_state._prepare_data_assets()
+            if (session_state.img_option not in PRESET_IMAGES.keys()) and (
+                not hasattr(session_state, "data_artifacts")
+            ):
+                session_state._prepare_data_assets()
 
-                    if len(session_state.data_artifacts["outputs"]["boxes"]) == 0:
-                        st.error(
-                            f"Sorry! The image you uploaded doesn't contain any recognizable objects. \
-                            Please try another image that contains one of the following classes: \
-                            \n\n {', '.join([label for label in COCO_LABELS if label not in ['N/A', '__background__']])}"
-                        )
-
+                if not session_state.has_detections:
+                    st.error(
+                        f"Sorry! The image you uploaded doesn't contain any recognizable objects. \
+                        Please try another image that contains one of the following classes: \
+                        \n\n {', '.join([label for label in COCO_LABELS if label not in ['N/A', '__background__']])}"
+                    )
             else:
-                # uncomment these two lines to build preset data pickles
-                # also need to manually add sub-directories
-                # session_state._prepare_data_assets()
-                # create_pickle(
-                #     session_state,
-                #     f"{session_state.ROOT_PATH}/{session_state.img_option}.pkl",
-                # )
-
                 session_state = load_pickle(session_state.pkl_path)
 
         fpn(session_state)
