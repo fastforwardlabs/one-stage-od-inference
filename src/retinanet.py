@@ -1,3 +1,6 @@
+# This module is adapted from the original Pytorch torchvision module
+# found at https://github.com/pytorch/vision/blob/master/torchvision/models/detection/retinanet.py
+
 import math
 from collections import OrderedDict
 import warnings
@@ -6,18 +9,15 @@ import torch
 import torch.nn as nn
 from torch import Tensor
 from torch.jit.annotations import Dict, List, Tuple
-
 from torchvision.models.utils import load_state_dict_from_url
-
 from torchvision.models.detection import _utils as det_utils
-
-# from torchvision.models.detection.anchor_utils import AnchorGenerator
-from src.anchor_utils import AnchorGenerator
 from torchvision.models.detection.transform import GeneralizedRCNNTransform
 from torchvision.models.detection.backbone_utils import resnet_fpn_backbone
 from torchvision.ops.feature_pyramid_network import LastLevelP6P7
 from torchvision.ops import sigmoid_focal_loss
 from torchvision.ops import boxes as box_ops
+
+from src.anchor_utils import AnchorGenerator
 
 
 __all__ = [
