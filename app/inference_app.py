@@ -58,7 +58,7 @@ def main():
 
             else:
                 # uncomment these two lines to build preset data pickles
-                # also need to manually add sub-directories
+                # # also need to manually add sub-directories
                 # session_state._prepare_data_assets()
                 # create_pickle(
                 #     session_state,
@@ -70,9 +70,17 @@ def main():
         fpn(session_state)
 
     elif step_option == APP_PAGES[2]:
+
+        if session_state.img_option in PRESET_IMAGES.keys():
+            session_state = load_pickle(session_state.pkl_path)
+
         rpn(session_state)
 
     elif step_option == APP_PAGES[3]:
+
+        if session_state.img_option in PRESET_IMAGES.keys():
+            session_state = load_pickle(session_state.pkl_path)
+
         nms(session_state)
 
 

@@ -16,7 +16,7 @@ def rpn(session_state):
 
     st.write(
         "Now that we've extracted features from the raw input image, the next step in the inference workflow is to generate a set of proposal \
-        locations on the image that _may_ contain an object. Proposals are nothing more than candidate regions for the objects of interest that get \
+        locations on the image that _may_ contain an object. Proposals are nothing more than rectangular shaped candidate regions that will get \
         classified as object or not-object. But how can we capture the seemingly infinite object location, shape, and size possibilities that exist in an image?"
     )
     st.write(
@@ -36,7 +36,7 @@ def rpn(session_state):
         st.write(
             "RPN's generate proposals by overlaying a grid of anchor points onto a feature map output by the backbone network where each point corresponds to the center of one activation. \
             A set of anchor boxes is then slid over each point in the anchor grid to capture objects of variable size, height, and width. In particular, RetinaNet captures 9 anchor boxes per spatial \
-            location by permuting the anchor box size and aspect ratios. This means that for the 6x6 feature map in the example below, the RPN will generate 6x6x9 = 324 object proposal boxes."
+            location by permuting anchor box size and aspect ratios. This means that for the 6x6 feature map in the example below, the RPN will generate 6x6x9 = 324 object proposal boxes."
         )
         st.image("images/anchor_explain.png")
         st.write("**RPN for FPN**")

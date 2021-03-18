@@ -54,9 +54,10 @@ def fpn(session_state):
         st.image(session_state.img_path, caption="Original Image")
         st.subheader("Feature Maps per FPN Level")
         st.write(
-            "The visual below depicts seven (of the 256 total) feature maps from each of the five feature pyramid levels. We see that features from the third pyramid level (P3) \
-            maintain higher resolution, but semantically weaker attributes which are useful for detecting small objects. In contrast, features from the final pyramid level \
-            (P7) hold much lower resolution, but semantically stronger activations, making them effective for identifying larger objects."
+            "The visual below depicts seven (of the 256 total) feature maps from each of RetinaNet's five feature pyramid levels. We see that features from the third pyramid level (P3) \
+            maintain higher resolution, but semantically weaker attributes which are useful for detecting small objects. In contrast, feature maps from the final pyramid level \
+            (P7) hold much lower resolution, but semantically stronger activations, making them effective for capturing larger objects."
         )
         st.image(session_state.fig_paths["fpn"], use_column_width="auto")
+
     return
