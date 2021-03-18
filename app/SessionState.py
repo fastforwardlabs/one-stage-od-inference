@@ -98,6 +98,10 @@ class SessionState(object):
 
         self.data_artifacts = gather_data_artifacts(img_path=self.img_path)
         self.fig_paths = self._save_figure_images()
+        self.has_detections = (
+            True if len(self.data_artifacts["outputs"]["boxes"]) > 0 else False
+        )
+        self.data_artifacts.pop("outputs")
 
 
 def get(**kwargs):
