@@ -73,7 +73,7 @@ def welcome(session_state, preset_images):
         )
         st.write(
             "In contrast, one-stage detectors must localize and classify a much larger set of densely sampled candidate object locations all in one pass. By design, these detectors can \
-            attain faster prediction speeds, but must overcome the inherent challenge of efficiently disambiguating between background noise and actual \
+            attain faster prediction speeds, but must overcome the inherent challenge of disambiguating between background noise and actual \
             object signal *without* the privilege of a independent proposal system."
         )
 
@@ -176,7 +176,7 @@ def fpn(session_state):
     st.write(
         "Feature extraction is central to any computer vision pipeline and is traditionally performed using deep networks of stacked convolutional layers (CNNs) \
         that refine raw images into a semantically rich, low dimensional representations. This approach _is_ transferable to object detection, however it must \
-        be augmented to maintain scale invariant image representations because in the real-world, objects from the same class can exist at a wide range of sizes depending on their depth in an image. \
+        be improved upon to maintain scale invariant image representations because in the real-world, objects from the same class can exist at a wide range of sizes depending on their depth in an image. \
         Recognizing objects a varying scales, particularly small objects, is a fundamental challenge in object detection. \
         RetinaNet uses a [Feature Pyramid Network (FPN)](https://arxiv.org/pdf/1612.03144.pdf) to solve this problem by extracting feature maps from multiple \
         levels of a [ResNet](https://arxiv.org/pdf/1512.03385.pdf) backbone."
@@ -184,7 +184,7 @@ def fpn(session_state):
 
     with st.beta_expander("How Do FPNs Work?", expanded=False):
         st.write(
-            "Feature Pyramid Networks exploit the inherent mulit-scale, pyramidal hierarchy of deep CNNs to detect objects at different scales by augmenting a network's default, \
+            "Feature Pyramid Networks exploit the innate mulit-scale, pyramidal hierarchy of deep CNNs to detect objects at different scales by augmenting a network's default, \
             bottom-up composition with a top-down pathway and lateral connections."
         )
         st.image(
@@ -195,7 +195,7 @@ def fpn(session_state):
             "**a. Bottom-up Pathway:** An FPN can be constructed from any deep CNN, but RetinaNet chooses a ResNet architecture. In ResNet, convolutional layers are grouped together \
                 into stages by their output size. The bottom-up pathway of the FPN simply extracts a feature map as the output from the last layer of each stage called a _pyramid level_. \
                 RetinaNet constructs a pyramid with levels P$_3$ - P$_7$, where P$_l$ indicates the pyramid level and has resolution 2$^l$ lower than the input image. Each pyramid level contains 256 channels, \
-                and P$_0$ - P$_2$ are omitted from the FPN because their high dimensionality has substantial impact on memory usage and computation speed."
+                and P$_0$ - P$_2$ are omitted from the FPN because their high dimensionality has substantial impact on memory and computation speed."
         )
         st.write(
             "**b. Top-down Pathway** The top-down pathway regenerates higher resolution features by upsampling spatially coarser, but semantically stronger feature maps from higher pyramid levels. \
@@ -272,8 +272,8 @@ def rpn(session_state):
 
         st.write(
             "Given the explanation above, the following widget visualizes the anchor grid and anchor box sizes that are applied to feature maps at each FPN level. The top image overlays a set of 9 anchor boxes centered at _one_ anchor point for \
-            each object in the image. The bottom image shows a sampled feature map from the selected FPN level to help visualize the activation granularity. By toggling the slider, we can infer which level of the FPN was likely used to detect \
-            each object."
+            each object in the image. The bottom image shows a sampled feature map from the selected FPN level to help visualize the activation granularity. By toggling the slider, we can infer which levels of the FPN are able to detect \
+            each object in the image."
         )
 
         pyramid_level = st.select_slider(
@@ -327,17 +327,17 @@ def nms(session_state):
     st.write(
         "First, RetinaNet selects up to 1,000 anchor boxes from each feature pyramid level that have the highest predicted probability of any class after thresholding detector confidence at 0.05. \
         Then, the top predictions from all levels are merged together, and an algorithm called *Non-Maximum Suppression (NMS)* is applied with a threshold of 0.5 to yield the final set of non-redundant detections. \
-        Finally, we apply a confidence threshold of 0.7 to the remaining predictions to filter out noisy detections."
+        Finally, we can apply a confidence threshold to the remaining predictions to filter out noisy detections - here we've chosen a threshold of 0.7."
     )
 
     with st.beta_expander("How does NMS work?"):
         st.write(
-            "Non-Maximum Suppression takes in the refined list of predicted _bounding boxes_ across all FPN levels along with the corresponding class prediction and confidence score. Then for each class independently:"
+            "Non-Maximum Suppression takes in a refined list of predicted _bounding boxes_ across all FPN levels along with the corresponding class prediction and confidence score. Then for each class independently:"
         )
 
-        st.write("1. Select the bounding box with the highest confidence score.")
+        st.write("1. Select the bounding box with the highest confidence score")
         st.write(
-            "2. Compare the _Intersection over Union (IoU)_ of that bounding box with all other bounding boxes."
+            "2. Compare the _Intersection over Union (IoU)_ of that bounding box with all other bounding boxes"
         )
 
         col1, col2, col3 = st.beta_columns(3)
@@ -348,9 +348,9 @@ def nms(session_state):
                 st.write(
                     "      [Image Credit](https://www.pyimagesearch.com/2016/11/07/intersection-over-union-iou-for-object-detection/)"
                 )
-        st.write("3. For each box, if IoU is > 0.5, drop that bounding box.")
+        st.write("3. For each box, if IoU is > 0.5, suppress that bounding box")
         st.write(
-            "4. For the remaining boxes, repeat steps 1 - 3 until all bounding boxes are accounted for."
+            "4. For the remaining boxes, repeat steps 1 - 3 until all bounding boxes are accounted for"
         )
         st.text("")
 
