@@ -18,6 +18,7 @@ APP_PAGES = [
     "1. Feature Extraction",
     "2. Region Proposal Network",
     "3. Non-Maximum Suppression",
+    "4. References",
 ]
 
 

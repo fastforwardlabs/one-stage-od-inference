@@ -9,10 +9,7 @@ import time
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
 import SessionState
-from welcome import welcome
-from fpn import fpn
-from rpn import rpn
-from nms import nms
+from app_pages import welcome, fpn, rpn, nms, references
 from src.model_utils import COCO_LABELS
 from src.data_utils import (
     gather_data_artifacts,
@@ -82,6 +79,10 @@ def main():
             session_state = load_pickle(session_state.pkl_path)
 
         nms(session_state)
+
+    elif step_option == APP_PAGES[4]:
+
+        references()
 
 
 if __name__ == "__main__":
