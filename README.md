@@ -20,20 +20,20 @@ This project is organized with the following directory structure:
 
 ```
 .
-├── cml                          # Scripts that facilitate the project setup on CML
+├── cml                           # Scripts that facilitate the project setup on CML
     ├── install_dependencies.py
     └── launch_app.py
-├── app             				     # Streamlit application files
+├── app                           # Streamlit application files
     ├── SessionState.py
     ├── app.py
     └── app_pages.py
-├── src											     # Modules supporting the model, data, and application
+├── src                           # Modules supporting the model, data, and application
     ├── anchor_utils.py
     ├── app_utils.py
     ├── data_utils.py
     ├── model_utils.py
     └── retinanet.py
-├── data                  	     # Storage directory for data assets
+├── data                           # Storage directory for data assets
 ├── images
 ├── README.md  
 ├── requirements.txt 
