@@ -223,47 +223,6 @@ def get_feature_map_plot(model):
     return fig
 
 
-def plot_anchors(image, boxes, sample):
-    """
-    Overlay anchor boxes on the original image
-
-    Args:
-        image - PIL image as RGB format
-        boxes - Tensor(N,4) of all anchor box specs
-        sample - percentage of anchorboxes to randomly select for visualization
-
-    Returns:
-        matplotlib Figure
-
-    """
-
-    fig, ax = plt.subplots(1, figsize=(10, 10))
-    ax.imshow(image)
-
-    num_samples = int(sample * boxes.shape[0])
-    sample_idxs = torch.randint(low=0, high=boxes.shape[0], size=(num_samples,))
-    boxes = boxes[sample_idxs]
-
-    for i, box in enumerate(boxes):
-
-        x, y, width, height = convert_bb_spec(*box)
-        top = y + height
-
-        patch = patches.Rectangle(
-            (x, y),
-            width,
-            height,
-            edgecolor="red",
-            linewidth=1,
-            facecolor="none",
-        )
-        ax.add_patch(patch)
-
-    plt.axis("off")
-
-    return fig
-
-
 def get_anchor_plots(image, anchor_generator, pred_boxes, features):
 
     anchor_plots = {}
