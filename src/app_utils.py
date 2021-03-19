@@ -224,6 +224,11 @@ def get_feature_map_plot(model):
 
 
 def get_anchor_plots(image, anchor_generator, pred_boxes, features):
+    """
+    Uses the model inference outputs to overlay anchor boxes on detected objects at
+    varying feature pyramid levels
+
+    """
 
     anchor_plots = {}
     for i in range(5):
