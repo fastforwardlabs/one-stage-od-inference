@@ -63,15 +63,13 @@ source .venv/bin/activate
 pip3 install -r requirements.txt
 ```
 
-Then, to start the application, run the following command from the root directory of the repo:
+To start the application, run the following command from the root directory of the repo:
 
 ```
 streamlit run app/app.py
 ```
 
-Note - you may need to configure ports depending on where the application is launched from.
-
-
+**Note -** you may need to configure ports depending on where the application is launched from.
 
 
 
