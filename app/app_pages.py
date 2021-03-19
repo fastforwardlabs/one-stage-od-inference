@@ -228,7 +228,7 @@ def rpn(session_state):
 
     """
 
-    st.title("Inline Region Proposal Network")
+    st.title("2. Inline Region Proposal Network")
     st.write(
         "Now that we've extracted features from the raw input image, the next step in the inference workflow is to generate a set of proposal \
         locations on the image that _may_ contain an object. Proposals are nothing more than rectangular shaped candidate regions that will get \
@@ -306,7 +306,7 @@ def nms(session_state):
 
     """
 
-    st.title("Object Detection Post Processing")
+    st.title("3. Object Detection Post Processing")
 
     total_anchors = sum(
         [
@@ -382,7 +382,7 @@ def references():
 
     """
 
-    st.title("References")
+    st.title("4. References")
 
     st.subheader("Papers")
     st.markdown(
