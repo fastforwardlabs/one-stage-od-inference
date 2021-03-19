@@ -35,6 +35,7 @@ This project is organized with the following directory structure:
     └── retinanet.py
 ├── data                           # Storage directory for data assets
 ├── images
+├── LICENSE
 ├── README.md  
 ├── requirements.txt 
 └── .project-metadata.yaml
