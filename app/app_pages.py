@@ -44,7 +44,7 @@ import shutil
 import streamlit as st
 from PIL import Image
 
-from src.app_utils import get_feature_map_plot, plot_anchors
+from src.app_utils import get_feature_map_plot
 from src.data_utils import create_directory_structure
 
 
