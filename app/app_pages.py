@@ -125,7 +125,7 @@ def welcome(session_state, preset_images):
             elif img_setting == "Upload your own":
                 uploaded_image = st.file_uploader(
                     label="Upload your image here",
-                    type=["png", "jpg"],
+                    type=["png", "jpg", "jpeg"],
                     accept_multiple_files=False,
                 )
 
