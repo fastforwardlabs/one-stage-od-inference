@@ -184,8 +184,8 @@ def fpn(session_state):
 
     with st.beta_expander("How Do FPNs Work?", expanded=False):
         st.write(
-            "Feature Pyramid Networks exploit the innate multi-scale, pyramidal hierarchy of deep CNNs to detect objects at different scales by augmenting a network's default, \
-            bottom-up composition with a top-down pathway and lateral connections."
+            "Feature Pyramid Networks exploit the multi-scale hierarchy that is naturally present in deep CNNs to detect objects at different scales. This is accomplished by augmenting a network's default,\
+             bottom-up composition (the innate pyramidal shape) with a top-down pathway and lateral connections, as explained below."
         )
         st.image(
             "images/fpn_diagram.png",
