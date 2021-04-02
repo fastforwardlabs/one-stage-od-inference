@@ -191,6 +191,11 @@ def fpn(session_state):
             "images/fpn_diagram.png",
             caption="Feature Pyramid Network Architecture",
         )
+
+        col1, col2, col3 = st.beta_columns(3)
+        with col2:
+            st.write("[Adapted Image Credit](https://arxiv.org/pdf/1612.03144.pdf)")
+
         st.write(
             "**a. Bottom-up Pathway:** An FPN can be constructed from any deep CNN, but RetinaNet chooses a ResNet architecture. In ResNet, convolutional layers are grouped together \
                 into stages by their output size. The bottom-up pathway of the FPN simply extracts a feature map as the output from the last layer of each stage called a _pyramid level_. \
