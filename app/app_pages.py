@@ -388,6 +388,10 @@ def references():
     """
 
     st.title("4. References")
+    st.write(
+        "In this application we’ve taken a step-by-step look at how the RetinaNet architecture pieces together common object detection components to extract robust feature maps, efficiently generate object proposal locations, and \
+         post-process detections from those proposals. To dig deeper on any of the topics covered here, read more at the sources listed below - hope you’ve enjoyed it!"
+    )
 
     st.subheader("Papers")
     st.markdown(
