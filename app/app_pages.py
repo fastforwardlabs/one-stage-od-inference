@@ -157,8 +157,11 @@ def welcome(session_state, preset_images):
                     session_state.img_path = img_path
 
         st.info(
-            "After selecting an image, use the navigation drop down menu in the top \
-            left sidebar to advance to the next page: ***1. Feature Extraction***"
+            "After selecting an image, use the navigation drop down menu in the top left sidebar to advance to the next page: ***1. Feature Extraction***"
+        )
+        st.warning(
+            "**NOTE** - The pages in this application are designed for sequential use. If you return to this page after navigating away from it, you may \
+            experience an FileNotFoundError, in which case, you will need to refresh the page and re-select/re-upload an image."
         )
 
     return session_state
