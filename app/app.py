@@ -83,7 +83,7 @@ def main():
                 if not session_state.has_detections:
                     st.error(
                         f"Sorry! The image you uploaded doesn't contain any recognizable objects. \
-                        Please try another image that contains one of the following classes: \
+                        Please refresh your browser and try another image that contains one of the following classes: \
                         \n\n {', '.join([label for label in COCO_LABELS if label not in ['N/A', '__background__']])}"
                     )
             else:

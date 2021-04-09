@@ -69,12 +69,12 @@ def welcome(session_state, preset_images):
             "In the field of computer vision, object detection refers to the task of classifying and localizing distinct objects of interest within an image. \
             Traditionally, state-of-the-art object detectors have been based on a two-stage architecture, where the first stage narrows the search space by \
             generating a sparse set of candidate object location proposals, and the second stage then classifies the narrowed down list of proposals. While this approach yields \
-            high accuracy, there is a significant tradeoff in speed, making these detectors impractical for real time use cases."
+            high accuracy, there is a significant tradeoff in speed, making these detectors impractical for real-time use cases."
         )
         st.write(
             "In contrast, one-stage detectors must localize and classify a much larger set of densely sampled candidate object locations all in one pass. By design, these detectors can \
-            attain faster prediction speeds, but must overcome the inherent challenge of disambiguating between background noise and actual \
-            object signal *without* the privilege of a independent proposal system."
+            attain faster prediction speeds but must overcome the inherent challenge of disambiguating between background noise and actual \
+            object signal *without* the privilege of an independent proposal system."
         )
 
     with st.beta_expander("RetinaNet", expanded=True):
@@ -83,9 +83,9 @@ def welcome(session_state, preset_images):
             caption="The one-stage RetinaNet network architecture",
         )
         st.write(
-            "RetinaNet was the first one-stage object detection model to uphold the speed benefits of a one-stage detector, while surpassing the accuracy of (at the time) all existing \
+            "RetinaNet was the first one-stage object detection model to uphold the speed benefits of a one-stage detector while surpassing the accuracy of (at the time) all existing \
             state-of-the-art two-stage detectors. This was achieved by piecing together standard components like a Feature Pyramid Network (FPN) backbone, a Region Proposal Network (RPN), dedicated classification \
-            and box regression sub networks, and introducing a novel loss function called Focal Loss."
+            and box regression sub-networks, and introducing a novel loss function called Focal Loss."
         )
         st.write(
             "In this application, we'll step through the inference process highlighting the inner working \
@@ -157,8 +157,11 @@ def welcome(session_state, preset_images):
                     session_state.img_path = img_path
 
         st.info(
-            "After selecting an image, use the navigation drop down menu in the top \
-            left sidebar to advance to the next page: ***1. Feature Extraction***"
+            "After selecting an image, use the navigation drop down menu in the top left sidebar to advance to the next page: ***1. Feature Extraction***"
+        )
+        st.warning(
+            "**NOTE** - The pages in this application are designed for sequential use. If you return to this page after navigating away from it, you may \
+            experience an FileNotFoundError, in which case, you will need to refresh the page and re-select/re-upload an image."
         )
 
     return session_state
@@ -175,9 +178,9 @@ def fpn(session_state):
     st.title("1. Multi-scale Feature Extraction")
     st.write(
         "Feature extraction is central to any computer vision pipeline and is traditionally performed using deep networks of stacked convolutional layers (CNNs) \
-        that refine raw images into a semantically rich, low dimensional representations. This approach _is_ transferable to object detection, however it must \
-        be improved upon to maintain scale invariant image representations because in the real-world, objects from the same class can exist at a wide range of sizes depending on their depth in an image. \
-        Recognizing objects a varying scales, particularly small objects, is a fundamental challenge in object detection. \
+        that refine raw images into semantically rich, low-dimensional representations. This approach _is_ transferable to object detection, however, it must \
+        be improved upon to maintain scale invariant image representations because, in the real world, objects from the same class can exist at a wide range of sizes depending on their depth in an image. \
+        Recognizing objects at varying scales, particularly small objects, is a fundamental challenge in object detection. \
         RetinaNet uses a [Feature Pyramid Network (FPN)](https://arxiv.org/pdf/1612.03144.pdf) to solve this problem by extracting feature maps from multiple \
         levels of a [ResNet](https://arxiv.org/pdf/1512.03385.pdf) backbone."
     )
@@ -199,8 +202,8 @@ def fpn(session_state):
         st.write(
             "**a. Bottom-up Pathway:** An FPN can be constructed from any deep CNN, but RetinaNet chooses a ResNet architecture. In ResNet, convolutional layers are grouped together \
                 into stages by their output size. The bottom-up pathway of the FPN simply extracts a feature map as the output from the last layer of each stage called a _pyramid level_. \
-                RetinaNet constructs a pyramid with levels P$_3$ - P$_7$, where P$_l$ indicates the pyramid level and has resolution 2$^l$ lower than the input image. Each pyramid level contains 256 channels, \
-                and P$_0$ - P$_2$ are omitted from the FPN because their high dimensionality has substantial impact on memory and computation speed."
+                RetinaNet constructs a pyramid with levels P$_3$ - P$_7$, where P$_l$ indicates the pyramid level and has resolution 2$^l$ lower than the input image. Each pyramid level contains 256 channels \
+                and P$_0$ - P$_2$ are omitted from the FPN because their high dimensionality has a substantial impact on memory and computation speed."
         )
         st.write(
             "**b. Top-down Pathway** The top-down pathway regenerates higher resolution features by upsampling spatially coarser, but semantically stronger feature maps from higher pyramid levels. \
@@ -208,7 +211,7 @@ def fpn(session_state):
         )
         st.write(
             "**c. Lateral Connections** Lateral connections between the two pathways are used to merge feature maps of the same spatial size by element-wise addition. These lateral connections combine \
-                the semantically rich, upsampled feature map from the top-down pathway with accurately localized activations from the bottom-up pathway creating robust, multi-scale features maps \
+                the semantically rich, upsampled feature map from the top-down pathway with accurately localized activations from the bottom-up pathway creating robust, multi-scale feature maps \
                 to use for inference."
         )
 
@@ -236,7 +239,7 @@ def rpn(session_state):
     st.title("2. Inline Region Proposal Network")
     st.write(
         "Now that we've extracted features from the raw input image, the next step in the inference workflow is to generate a set of proposal \
-        locations on the image that _may_ contain an object. Proposals are nothing more than rectangular shaped candidate regions that will get \
+        locations on the image that _may_ contain an object. Proposals are nothing more than rectangular-shaped candidate regions that will get \
         classified as object or not-object. But how can we capture the seemingly infinite object location, shape, and size possibilities that exist in an image?"
     )
     st.write(
